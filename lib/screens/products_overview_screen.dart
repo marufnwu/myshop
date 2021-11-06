@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:myshop/models/product.dart';
+import 'package:myshop/providers/cart.dart';
 import 'package:myshop/providers/products.dart';
+import 'package:myshop/widget/badge.dart';
 import 'package:myshop/widget/product_grid.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +19,7 @@ class ProductsOverviewScreen extends StatefulWidget {
 }
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
-  var _showOnlyFavorite = true;
+  var _showOnlyFavorite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +45,24 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                 return [
                   const PopupMenuItem(child: Text("Only favorite"), value: FilterOption.Favorite,),
                   const PopupMenuItem(child: Text("Show All"), value: FilterOption.All,),
+
                 ];
               },
             icon: const Icon(Icons.more_vert),
+          ),
+          Consumer<Cart>(
+              builder: (ctx, cart, ch){
+                return Badge(
+                  child: ch!,
+                  value: cart.itemCount.toString() ,
+                );
+              },
+            child: IconButton(
+              onPressed: (){},
+              icon: const Icon(Icons.shopping_cart),
+            ),
           )
+
         ],
       ),
       body: ProductGrid(_showOnlyFavorite),
